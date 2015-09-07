@@ -8,7 +8,6 @@ Algoritmos y estructura de datos
 Sección 30
 Hoja de trabajo 7
 -------------------------------------------------------------------*/
-import java.util.*;
 
 public class Main{
 
@@ -42,19 +41,15 @@ public class Main{
     palabra[5].setIngles("yes");
  
     ArbolBusqueda arbol = new ArbolBusqueda();
-    arbol.insertar("marlon");
-    arbol.insertar("josue");
-    arbol.insertar("castillo");
-    arbol.insertar("martinez");
-    arbol.insertar("juan");
-    arbol.insertar("pedro");
-    arbol.posOrder(); //izquierdo, derecho, raiz
-    System.out.println("\n");
-    arbol.preOrder(); //raiz, izquierdo, derecho
-    System.out.println("\n");
+    arbol.insertar(palabra[0].getIngles());
+    arbol.insertar(palabra[1].getIngles());
+    arbol.insertar(palabra[2].getIngles());
+    arbol.insertar(palabra[3].getIngles());
+    arbol.insertar(palabra[4].getIngles());
+    arbol.insertar(palabra[5].getIngles());
     arbol.inOrder();  //izquierdo, raiz, derecho
     System.out.println("\n");
-    arbol.buscar("pedro");
+    arbol.buscar("yes");
   }
 
 }
