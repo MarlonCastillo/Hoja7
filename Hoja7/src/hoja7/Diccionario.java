@@ -9,12 +9,11 @@ Sección 30
 Hoja de trabajo 7
 -------------------------------------------------------------------*/
 
-import java.util.*;
-
 class Diccionario{
       private String espanol;
       private String ingles;
-      
+
+//get y set para los atributos
       public void setIngles(String ingles){        
              this.ingles=ingles;
       }
@@ -32,4 +31,5 @@ class Diccionario{
       }     
 
 }
+
 
