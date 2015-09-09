@@ -9,190 +9,330 @@ Sección 30
 Hoja de trabajo 7
 -------------------------------------------------------------------*/
 
-//este codigo fue tomado del siguiente enlace:
-//http://www.lawebdelprogramador.com/codigo/Java/2257-Arboles-binarios-de-busqueda.html
+/*
+ //este codigo fue tomado del siguiente enlace:
+ * http://www.cis.upenn.edu/~matuszek/cit594-2008/Examples/BinaryTrees/src/BinaryTree.java
+ */
 
-//clase que permite implementar un arbol binario de busqueda
+package hoja7;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.*;
-public class ArbolBusqueda {
 
-//clase para crear los nodos del arbol 
-    private class nodoArbol {
-        private ArbolBusqueda hd;
-        private ArbolBusqueda hi;
-        private String dato;
- 
-        private void nodoArbol(){
-            hd = null;
-            hi = null;
-            dato = "";
-        }
+public class ArbolBusqueda<V> {
+    /**
+     * The value (data) in this node of the binary tree; may be of
+     * any object type.
+     */
+    public V value;
+    private ArbolBusqueda<V> leftChild;
+    private ArbolBusqueda<V> rightChild;
+    private boolean comparacion;
+    private boolean funcionamiento = true;
+    String retorno;
+
+    /**
+     * Constructor for BinaryTree.
+     * 
+     * @param value The value to be placed in the root.
+     * @param leftChild The left child of the root (may be null).
+     * @param rightChild The right child of the root (may be null).
+     */
+    public ArbolBusqueda(V value, ArbolBusqueda<V> leftChild, ArbolBusqueda<V> rightChild) {
+        this.value = value;
+        this.leftChild = leftChild;
+        this.rightChild = rightChild;
     }
-    public nodoArbol raiz;
-//creamos la raiz del arbol
-    public void ArbolBusqueda(){
-        nodoArbol raiz = new nodoArbol();
+    /**
+     * @param value The value to be placed in the root.
+     */
+    public ArbolBusqueda(V value) {
+        this(value, null, null);
     }
- //verificamos si el arbol esta vacio o no
-    public boolean esVacio(){
-        return (raiz == null);
+    /**
+     * @return The value in this node.
+     */
+    public V getValue() {
+        return value;
     }
-//insertamos un nuevo elemento en el arbol
-    public void insertar(String a){
-        //si el arbol esta vacio entonces el elemento ingresado se convierte en la raiz
-        if (esVacio()) {
-            nodoArbol nuevo = new nodoArbol();
-            nuevo.dato = a;
-            nuevo.hd = new ArbolBusqueda();
-            nuevo.hi = new ArbolBusqueda();
-            raiz = nuevo;
+    /**
+     * @return The left child (<code>null</code> if no left child).
+     */
+    public ArbolBusqueda<V> getLeftChild() {
+        return leftChild;
+    } 
+    /**
+     * @return The right child (<code>null</code> if no right child).
+     */
+    public ArbolBusqueda<V> getRightChild() {
+        return rightChild;
+    }
+    /**
+     * @param subtree The node to be added as the new left child.
+     * @throws IllegalArgumentException If the operation would cause
+     *         a loop in the binary tree.
+     */
+    public void setLeftChild(ArbolBusqueda<V> subtree) throws IllegalArgumentException {
+        if (contains(subtree, this)) {
+            throw new IllegalArgumentException(
+                "Subtree " + this +" already contains " + subtree);
         }
-        else {
-            //si no esta vacio el arbol se verifica si se coloca al lado derecho o izquierdo segun sea mayor o menor respectivamente
-            //compareTo regresa un 0 si son iguales, un positivo si el primero es mayor al segundo y un negativo si el primero es menor al segundo
-            int b = a.compareTo(raiz.dato);
-            if (b>0) {
-                (raiz.hd).insertar(a);
-            }
-            if (b<0){
-                (raiz.hi).insertar(a);
-            }
+        leftChild = subtree;
+    }
+    /**
+     * @param subtree The node to be added as the new right child.
+     * @throws IllegalArgumentException If the operation would cause
+     *         a loop in the binary tree.
+     */
+    public void setRightChild(ArbolBusqueda<V> subtree) throws IllegalArgumentException {
+        if (contains(subtree, this)) {
+            throw new IllegalArgumentException(
+                    "Subtree " + this +" already contains " + subtree);
         }
+        rightChild = subtree;
+    }
+    /**
+     * Sets the value in this BinaryTree node.
+     * 
+     * @param value The new value.
+     */
+    public void setValue(V value) {
+        this.value = value;
+    }
+    /**
+     * Tests whether this node is a leaf node.
+     * 
+     * @return <code>true</code> if this BinaryTree node has no children.
+     */
+    public boolean isLeaf() {
+        return leftChild == null && rightChild == null;
+    }
+    
+    /**
+     * @return <code>true</code> if the binary trees are equal.
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    public boolean equals(Object o) {
+        if (o == null || !(o instanceof ArbolBusqueda)) {
+            return false;
+        }
+        ArbolBusqueda<?> otherTree = (ArbolBusqueda<?>) o;
+        return equals(value, otherTree.value)
+            && equals(leftChild, otherTree.getLeftChild())
+            && equals(rightChild, otherTree.getRightChild());
+    }
+    
+    /**
+     * @param x The first object to be tested.
+     * @param y The second object to be tested.
+     * @return <code>true</code> if the two objects are equal.
+     */
+    private boolean equals(Object x, Object y) {
+        if (x == null) return y == null;
+        return x.equals(y);
     }
 
-//permite hacer un recorrido preOrder (raiz, izquierdo, derecho)
-    public void preOrder(){
-        if (!esVacio()) {
-            System.out.print( raiz.dato + ", "  );
-            raiz.hi.preOrder();
-            raiz.hd.preOrder();
-        }
-    }
-
-//permite hacer un recorrido preOrder (izquierdo, raiz, derecho)
-    public void inOrder(){
-        if (!esVacio()) {
-            raiz.hi.inOrder();
-            System.out.print( raiz.dato + ", "  );
-            raiz.hd.inOrder();
-        }
-    }
-
-//permite hacer un recorrido preOrder (izquierdo, derecho, raiz)
-    public void posOrder(){
-        if (!esVacio()) {
-            raiz.hd.posOrder();
-            raiz.hi.posOrder();
-            System.out.print( raiz.dato + ", "  );
- 
-        }
-    }
-
-//busca un elemento especifico en el arbol
-    public ArbolBusqueda buscar(String a){
-        ArbolBusqueda arbolito = null;
-        int b = a.compareTo(raiz.dato);
-        //si el arbol no esta vacio comienza la busqueda, de lo contrario retorna null
-        if (!esVacio()) {
-            //si el valor que se desea buscar es igual a la raiz
-            if (b==0) {
-            System.out.println(a);
-            return this;
-            }
-            else {
-                //si no es igual a la raiz verifica si es mayor o menor a la misma, cambia la raiz y vuelve a llamar de nuevo al metodo
-                if (b<0) {
-                    arbolito = raiz.hi.buscar(a);
-                }
-                else {
-                    arbolito = raiz.hd.buscar(a);
-                }
-            }
-        }
-        return arbolito;
-    }
- /*
-    public boolean existe(int a){
-    if (!esVacio()) {
-            if (a == raiz.dato) {
+    /**
+     * @param tree The root of the binary tree to search.
+     * @param targetNode The node to be searched for.
+     * @return <code>true</code> if the <code>targetNode</code> argument can
+     *        be found within the binary tree rooted at <code>tree</code>.
+     */
+    protected static boolean contains(ArbolBusqueda tree,
+                                      ArbolBusqueda targetNode) {
+        if (tree == null)
+            return false;
+        if (tree == targetNode)
             return true;
+        return contains(tree.getLeftChild(), targetNode)
+            || contains(tree.getRightChild(), targetNode);
+    }
+    public void print() {
+        print(this, 0);
+    }
+    
+    private void print(ArbolBusqueda<V> root, int indent) {
+        for (int i = 0; i < indent; i++) {
+            System.out.print("   ");
+        }
+        if (root == null) {
+            System.out.println("null");
+            return;
+        }
+        System.out.println(root.value);
+        if (root.isLeaf()) return;
+        print(root.leftChild, indent + 1);
+        print(root.rightChild, indent + 1);
+    }
+
+
+    /**
+     * @return An exact copy of this BinaryTree; the values in the new BinaryTree
+     *         are == to the values in this BinaryTree.
+     */
+    public ArbolBusqueda<V> copy() {
+        ArbolBusqueda<V> left =  null, right = null;
+        if (this.leftChild != null) {
+            left = this.leftChild.copy();
+        }
+        if (this.rightChild != null) {
+            right = this.rightChild.copy();
+        }
+        return new ArbolBusqueda(this.value, left, right);
+    }
+
+    /*
+     * @return A mirror image copy of this BinaryTree; values in the new BinaryTree
+     *         are == to the values in this BinaryTree.
+     */
+    public ArbolBusqueda<V> reverse() {
+        ArbolBusqueda<V> left =  null, right = null;
+        if (this.leftChild != null) {
+            left = this.leftChild.reverse();
+        }
+        if (this.rightChild != null) {
+            right = this.rightChild.reverse();
+        }
+        return new ArbolBusqueda(this.value, right, left);
+    }
+
+    /**
+     * Rearranges the binary tree rooted at this binary tree to be the mirror image
+     * of its original structure. No new BinaryTree nodes are created in this
+     * process.
+     */
+    public void reverseInPlace() {
+        if (this.leftChild != null) {
+            leftChild.reverseInPlace();
+        }
+        if (this.rightChild != null) {
+            rightChild.reverseInPlace();
+        }
+        ArbolBusqueda<V> temp = this.leftChild;
+        this.setLeftChild(this.rightChild);
+        this.setRightChild(temp);
+    }
+    
+    public void insertar(ArbolBusqueda<V> papa, ArbolBusqueda<V> subarbol){
+        boolean mayor = papa.compareTo(papa, subarbol);
+        if(mayor==true){ //si papa es mayor que el subarbol, se agrega del lado izquierdo
+            if(papa.getLeftChild()==null){
+                papa.setLeftChild(subarbol);
+                
             }
-            else {
-                if (a < raiz.dato) {
-                    raiz.hi.existe(a);
+            else{
+                ArbolBusqueda<V> temp = papa.getLeftChild(); //Guardamos el nuevo papa 
+                papa = temp;
+                insertar(papa,subarbol);
+            }
+        }
+        
+        else if(mayor==false){ //si papa es menor que el subarbol, se agrega del lado derecho
+            if(papa.getRightChild()==null){
+                papa.setRightChild(subarbol);
+                
+            }
+            else{
+                ArbolBusqueda<V> temp = papa.getRightChild(); //Guardamos el nuevo papa 
+                papa = temp;
+                insertar(papa,subarbol);
+            }
+        }
+    }
+        
+    public boolean compareTo(ArbolBusqueda<V> padre, ArbolBusqueda<V> hijo){
+        //boolean comparacion = true;
+        if((hijo.getValue()==null) || (padre.getValue()==null))
+        {
+            
+        }
+        
+        else{
+            TreeMap palabrapadre = (TreeMap) padre.getValue();
+            TreeMap palabrahijo = (TreeMap) hijo.getValue();
+            
+            Object  algohijo = palabrahijo.firstKey();
+            String nombrehijo = (String) palabrahijo.get(algohijo);
+
+            Object  algopadre = palabrapadre.firstKey();
+            String nombrepadre = (String) palabrapadre.get(algopadre);
+            
+            //Para evitar OutofBounds en el for, solo recorreremos hasta el largo de la palabra mas corta.
+            int largofor=0;
+            if (nombrehijo.length()>=nombrepadre.length()){
+                largofor = nombrepadre.length();
+            }
+            else if (nombrehijo.length()<nombrepadre.length()){
+                largofor = nombrehijo.length();
+            }
+
+            for (int x = 0; x<largofor; x++){
+                String chijo = Character.toString(nombrehijo.charAt(x)).toUpperCase();
+                String cpadre = Character.toString(nombrepadre.charAt(x)).toUpperCase();
+
+                if (chijo.compareTo(cpadre)>0){
+                    comparacion = false;
+                    break;
+                }
+                else if (chijo.compareTo(cpadre)<0){
+                    comparacion = true;
+                    break;
                 }
                 else {
-                    raiz.hd.existe(a);
+                    //Si son iguales, pasamos a la siguiente letra
                 }
             }
         }
-        return false;
+        return comparacion;
     }
- 
-    public int cantidad(){
-        if (esVacio()) {
-            return 0;
-        }
-        else {
-            return (1 + raiz.hd.cantidad() + raiz.hi.cantidad());
-        }
-    }
- 
-    public int altura() {
-        if (esVacio()) {
-            return 0;
-        }
-        else {
-            return (1 + Math.max(((raiz.hi).altura()), ((raiz.hd).altura())));
+    
+    public void inOrder(ArbolBusqueda<V> raiz){
+        if (raiz != null){
+            inOrder(raiz.getLeftChild());
+            
+            TreeMap palabraImprimir = (TreeMap) raiz.getValue();
+            Object  objPalabra = palabraImprimir.firstKey();
+            String nombre = (String) palabraImprimir.get(objPalabra);
+            System.out.println("("+nombre+","+palabraImprimir.firstKey()+")");
+            
+            inOrder(raiz.getRightChild());
         }
     }
- 
-    public int buscarMin() {
-        ArbolBusqueda arbolActual = this;
-        while( !arbolActual.raiz.hi.esVacio() ) {
-            arbolActual = arbolActual.raiz.hi;
-        }
-        int devuelvo= arbolActual.raiz.dato;
-        arbolActual.raiz=null;
-        return devuelvo;
-    }
- 
-    public int buscarMan() {
-        ArbolBusqueda arbolActual = this;
-        while( !arbolActual.raiz.hd.esVacio() ) {
-            arbolActual = arbolActual.raiz.hd;
-        }
-        int devuelvo= arbolActual.raiz.dato;
-            arbolActual.raiz=null;
-        return devuelvo;
-    }
- 
-    public boolean esHoja() {
-        boolean hoja = false;
-        if( (raiz.hi).esVacio() && (raiz.hd).esVacio() ) {
-            hoja = true;
-        }
-        return hoja;
-    }
- 
-    public void eliminar(int a) {
-        ArbolBusqueda paraEliminar = buscar(a);
-        if (!paraEliminar.esVacio()) {
-            if (paraEliminar.esHoja()) {
-                paraEliminar.raiz = null;
+    
+    public String buscar(ArbolBusqueda<V> raiz, String palabra){
+        funcionamiento = true;
+        if (funcionamiento==true){
+            if (raiz != null){
+
+                if (funcionamiento == true){
+                    buscar(raiz.getLeftChild(), palabra);
+                }
+                TreeMap palabracomp = (TreeMap) raiz.getValue();
+                Object  algohijo = palabracomp.firstKey();
+                String nombrehijo = (String) palabracomp.get(algohijo);
+
+                String nombrehijoMay = nombrehijo.toUpperCase();
+                String palabraMay = palabra.toUpperCase();
+                
+                if (nombrehijoMay.equals(palabraMay)){
+                    Object algoespanol = palabracomp.firstKey();
+                    retorno = (String) algoespanol;
+                    funcionamiento = false;
+                    
+                }
+                if (funcionamiento == true){
+                    buscar(raiz.getRightChild(), palabra);
+                }
+
             }
-            else {
-                if (!paraEliminar.raiz.hi.esVacio() && !paraEliminar.raiz.hd.esVacio()) {
-                    paraEliminar.raiz.dato = paraEliminar.raiz.hd.buscarMin();
-                }
-                else {
-                    if (paraEliminar.raiz.hi.esVacio()) {
-                        paraEliminar.raiz = paraEliminar.raiz.hd.raiz;
-                    }else{
-                        paraEliminar.raiz = paraEliminar.raiz.hi.raiz;
-                    }
-                }
+            if ((raiz == null) && (funcionamiento == true)){
+                retorno = null;
             }
         }
-    }*/
+        return retorno;
+    }
 }
+
