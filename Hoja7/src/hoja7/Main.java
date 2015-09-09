@@ -63,13 +63,18 @@ public class main {
                     palabras[cont][1] = palabrain; //agregan palabras en array que contiene en espaniol e ingles
                     palabras[cont][0] = palabraes;
                     cont++;
+                    Association association = new Association(Bpalabrain, Bpalabraes);
                 }
+            
             }
+         
             catch(IOException ex) {
                 Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println("Erro 2: Error en lectura del fichero.");
             }
         }
 	catch(FileNotFoundException ex) {
+            System.out.println("Error 1: Archivo diccionario.txt no encontrado.");
             Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex);
         }
         //Se hace un Map con cada una de las palabras. 
@@ -139,7 +144,9 @@ public class main {
             }               
             }
                 catch(IOException ex) {
+                     System.out.println("Error 1: Archivo diccionario.txt no encontrado.");
                      Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex);}}
                 catch(FileNotFoundException ex) {
+                     System.out.println("Erro 2: Error en lectura del fichero.");
                      Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex);}}  
 }
