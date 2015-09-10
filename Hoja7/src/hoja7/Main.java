@@ -5,11 +5,11 @@ Fernando Sebastian Castillo Echeverria      14102
 
 Algoritmos y estructura de datos
 Seccion 30
-************************Hoja de trabajo 6********************************
+************************Hoja de trabajo 7********************************
 -------------------------------------------------------------------------*/
 
 
-package hoja7;
+
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.*;
@@ -20,8 +20,8 @@ public class main {
     public static void main(String[] args) {
          int palabra = 0;
          int cont = 0;        
-         System.out.print("\n BINEVENIDO TRADUCTOR INGLES-ESPAÑOL: \n ");
-         File texto = new File("C:\\Users\\SebasCas\\Documents\\NetBeansProjects\\Hoja7\\src\\hoja7//diccionario.txt");
+         System.out.print("\n BINEVENIDO TRADUCTOR INGLES-ESPANOL: \n ");
+         File texto = new File("C:\\Users\\Marlon\\Desktop\\Hoja7-master\\Hoja7\\src\\hoja7//diccionario.txt");
          
 
          try {
@@ -33,7 +33,7 @@ public class main {
              }
                     catch (IOException e){ }
                     String palabras[][] = new String[palabra][2];
-         //se verifica si la palabra esta en ingles(true) o en español(falce).
+         //se verifica si la palabra esta en ingles(true) o en espanol(falce).
          try{
             BufferedReader br = new BufferedReader(new FileReader(texto));
          try{
@@ -52,7 +52,7 @@ public class main {
                 char c = line.charAt(y);
                     Bpalabraes.append(c);}}                        
                 if (line.charAt(y) == 44){
-                            //se cambia de palabra a español si es coma ya que despues es la palabra a español
+                            //se cambia de palabra a espanol si es coma ya que despues es la palabra a espanol
                     InEs = false;}                  
                         else {
                             //si es algo mas o un espacio no se agrega.
@@ -97,14 +97,14 @@ public class main {
         } 
         
         System.out.println("Palabras en Orden :");
-        System.out.println("*Ingles / Español*");
+        System.out.println("*Ingles / Espanol*");
         root.inOrder(root);
         
         //************************************************************************************************************
         //Lectura y traduccion de oracion en ingles 
         int cont2 = 0;
-        System.out.println("\n ***TRADUCCIÓN INGLES A ESPAÑOL: \n");
-        File oracionI = new File("C:\\Users\\SebasCas\\Documents\\NetBeansProjects\\Hoja7\\src\\hoja7//oracionIngles.txt");
+        System.out.println("\n ***TRADUCCIÓN INGLES A ESPANOL: \n");
+        File oracionI = new File("C:\\Users\\Marlon\\Desktop\\Hoja7-master\\Hoja7\\src\\hoja7//oracionIngles.txt");
         StringBuilder Bpalabra = new StringBuilder();
         try{
             BufferedReader br2 = new BufferedReader(new FileReader(oracionI));
@@ -118,26 +118,26 @@ public class main {
                 if ((line.charAt(y) == 32) && cont2>0){
                     
                     String NoTraducida = Bpalabra.toString();
-                    String español = root.buscar(root, NoTraducida);
-                    if (español == null){
+                    String espanol = root.buscar(root, NoTraducida);
+                    if (espanol == null){
                         //Imprimimos la palabra no encontrada y colocamos los *
                         System.out.print(" *" + NoTraducida + "* ");}                     
                             else {
-                                //Imprimimos la palabra en español. 
-                                System.out.print(español);}
+                                //Imprimimos la palabra en espanol. 
+                                System.out.print(espanol+" ");}
                             Bpalabra = new StringBuilder(); //Reseteamos el StringBuilder
                             cont2 = 0;
                         }
                        
                      if( (y == (line.length()-1)) && (line.charAt(line.length()-1) != 32)){
                         String NoTraducida = Bpalabra.toString();
-                        String español = root.buscar(root, NoTraducida);
-                        if (español == null){
+                        String espanol = root.buscar(root, NoTraducida);
+                        if (espanol == null){
                             //Imprimimos la palabra no encontrada y colocamos los *
                              System.out.print(" *" + NoTraducida + "* ");}                         
                         else {
-                            //Imprimimos la palabra en español. 
-                             System.out.print(español + "\n");
+                            //Imprimimos la palabra en espanol. 
+                             System.out.print(espanol + "\n");
                              System.out.println("-------------------------------------------------------------------------------------------");
                         System.out.println("\n ***********************Fin de la Traduccion :)***************** \n"); }}}                                                            
                             
