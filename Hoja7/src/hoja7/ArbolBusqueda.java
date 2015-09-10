@@ -14,7 +14,7 @@ Hoja de trabajo 7
  * http://www.cis.upenn.edu/~matuszek/cit594-2008/Examples/BinaryTrees/src/BinaryTree.java
  */
 
-package hoja7;
+
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -335,4 +335,5 @@ public class ArbolBusqueda<V> {
         return retorno;
     }
 }
+
 
